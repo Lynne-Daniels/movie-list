@@ -1,6 +1,5 @@
-ReactDOM.render(<App/>, document.getElementById('app'));
-
-
-
-
 /// render to the DOM
+ReactDOM.render(<App movies = {window.movies}/>, document.getElementById('app'));
+
+
+

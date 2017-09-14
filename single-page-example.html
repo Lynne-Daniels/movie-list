@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>React Tutorial</title>
+
+
+
+    <!--Babel transpiles JSX and ES6 to ES5 that the brower can understand.-->  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <!-- React -->
+    <script src="https://fb.me/react-with-addons-0.14.6.js"></script>
+    <script src="https://fb.me/react-dom-0.14.6.js"></script>
+
+    <!-- Remember to include all your .js and .jsx files.  Order matters.  Variables will be undefined if the file
+    that needs them is running before the file with the variable declaration is processed. Be certain to tell babel
+    about the jsx, add type="text/babel" to the opening script tag. -->
+</head>
+
+<body>
+<!--
+_RESOURCES_
+
+React -  https://facebook.github.io/react/docs/hello-world.html
+Babel -- http://babeljs.io/
+JSX -- https://facebook.github.io/react/docs/jsx-in-depth.html
+
+-->
+<!-- Here is where React will render its information and markup. -->
+  <div id="app"></div>
+
+<!-- The type tells Babel to transpile the JSX into plain javascript and html. -->
+<script type="text/babel">
+{/*	
+_Create an instance of a React Component_
+
+We chose any name we like.  App is a common choice.  App is defined as an instance of a React.Component.
+
+
+*/}
+class App extends React.Component { // Do this before using b/c ES6 classes are not hoisted
+  /*  Props is a magic word.  Everything breaks if I don't use it.  TODO - understand props 
+  Question:  Is it correct to say props is an object where we will attach data properties?
+  Question:  Did I cause constructor to know about props when I invoked
+  ReactDOM.render(<App todos = {window.todos}/>, document.getElementById('app'));?
+  */
+  constructor(props) { // This function constructs the instance.
+    super(props); // Cannot use this in ES6 before calling Super, also using it to pass along props?
+    // tested: everything breaks if props is not an argument to both invocations
+    
+    /*
+    Not sure yet why I need state.  Props used to not work and I copied state from a working example.
+    Now both work.  TODO: Learn more about state.
+    */
+    this.state = {
+      steps: this.props.todos,
+      step: this.props.todos[0].step
+    }; 
+
+  }
+  render() {
+    return <h1>{this.state.step}{this.props.todos[0].step}</h1>;
+  }
+}
+// App needs to be in the global scope.  It is undefined if this line is removed
+window.App = App;
+
+var todos = [
+  {step: 'Create the Component'},
+  {step: ''},
+  {step: ''},
+  {step: ''},
+  {step: ''},
+  {step: ''},
+  {step: 'Render the Component'},
+
+];
+
+window.todos = todos;
+{/*
+
+_Render the Component_
+
+Below is where we tell React to put a component's information and markup into the DOM, which will 
+update the page.
+ TODO is it more accurate to say that the render function updates the view, which updates the DOM, 
+ which updates the page? 
+
+The render function takes two arguments.  The first, App, is the name of the React Component.  It is
+an instance of the predefined React.Component class.  We tell it about its data when we
+say todos = {window.todos}.  We have to use window.anything because something, (TODO remember what),
+breaks if we just assume the global scope will work. (It actually is still working in this single file app.
+It breaks the multipage version because JSX and Babel?). Anyway, this programming stuff gets increasingly
+complex. Can't hurt to use window.whatever to note when a variable is to be used on the global scope.
+
+The second argument tells the component where on the page to render its markup and data.
+The page must have an html tag with an id that matches the argument of the function call
+used to specify the DOM node.
+*/}
+ReactDOM.render(<App todos = {window.todos}/>, document.getElementById('app'));
+</script>
+</body>
+
+</html>

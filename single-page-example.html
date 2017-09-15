@@ -6,8 +6,6 @@
     <meta charset="UTF-8">
     <title>React Tutorial</title>
 
-
-
     <!--Babel transpiles JSX and ES6 to ES5 that the brower can understand.-->  
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
     <!-- React -->
@@ -17,6 +15,20 @@
     <!-- Remember to include all your .js and .jsx files.  Order matters.  Variables will be undefined if the file
     that needs them is running before the file with the variable declaration is processed. Be certain to tell babel
     about the jsx, add type="text/babel" to the opening script tag. -->
+
+    <style>
+      ul {
+       list-style-type: none;
+       max-width: 450px;
+      }
+      code, p {
+        margin: 0;
+        padding: 0;
+      }
+      li {
+        border: 1px solid gray;
+      }
+    </style>
 </head>
 
 <body>
@@ -41,18 +53,20 @@ We chose any name we like.  App is a common choice.  App is defined as an instan
 
 */}
 class App extends React.Component { // Do this before using b/c ES6 classes are not hoisted
-  /*  Props is a magic word.  Everything breaks if I don't use it.  TODO - understand props 
-  Question:  Is it correct to say props is an object where we will attach data properties?
+  /*  Props is a magic word.  Everything breaks if I don't use it.  
+    Is it correct to say props is an object where we will attach data properties? - yes, think of parameter list
   Question:  Did I cause constructor to know about props when I invoked
   ReactDOM.render(<App todos = {window.todos}/>, document.getElementById('app'));?
   */
   constructor(props) { // This function constructs the instance.
-    super(props); // Cannot use this in ES6 before calling Super, also using it to pass along props?
-    // tested: everything breaks if props is not an argument to both invocations
+    super(props); // Cannot use the keeyword this in ES6 before calling Super, also using it to pass along props?
+    // tested: everything breaks if props is not an argument to both invocations be able to articulate why
+    // it breaks super calls the parent class constructor, constructor adds vals uniqu to child class and passes
+    // along the values needed by super
     
     /*
-    Not sure yet why I need state.  Props used to not work and I copied state from a working example.
-    Now both work.  TODO: Learn more about state.
+    Don't actually need state here.  State keeps track of user input, external inputs.
+    Best practice is to keep state shared by smallest possible section of application.
     */
     this.state = {
       steps: this.props.todos,
@@ -60,22 +74,48 @@ class App extends React.Component { // Do this before using b/c ES6 classes are 
     }; 
 
   }
+
+  // TODO iterate over all the props
   render() {
-    return <h1>{this.state.step}{this.props.todos[0].step}</h1>;
+    return (
+      <div> 
+      <h1>React Example</h1>
+      <h2>{this.props.headline}</h2>
+        <ul>
+          {this.props.todos.map((todo, index)=>
+            {return <li key={index}>{todo.step}:
+            <p><code>{todo.desc}</code></p></li>}
+            )}
+        </ul>
+      <h2>Hello Worldish Examples</h2>
+        <p><code>this.state.step </code>renders the same thing as <code>this.props.todos[0].step</code></p>
+        <p>{this.props.todos[0].step}</p>
+        <p>{this.state.step}</p>
+      </div>)
+   // TODO make these descriptions properties in the App
+
+
   }
 }
 // App needs to be in the global scope.  It is undefined if this line is removed
 window.App = App;
 
-var todos = [
-  {step: 'Create the Component'},
-  {step: ''},
-  {step: ''},
-  {step: ''},
-  {step: ''},
-  {step: ''},
-  {step: 'Render the Component'},
+{/*
+All the data is also attached to window.  At the bottom of the page, notice each variable is passed to
+the render function: ReactDOM.render(<App todos = {window.todos}/>, document.getElementById('app'));
 
+*/}
+var headline = 'Step one, read the steps';
+window.headline = headline;
+var todos = [
+  {step: 'Add Dependencies - React, Babel', desc: '<script src="https://fb.me/react-'},
+  {step: 'Get some data and attach variable to global scope', desc: 'var headline = \'Step one... window.headline = headline'},
+  {step: 'Create the React Component', desc: 'class App extends React.Component { //etc...'},
+  {step: 'Give properties to the component', desc: 'constructor(props) {super(props);'},
+  {step: 'Give it a state (optional)', desc: 'this.state = {...'},
+  {step: 'Add some methods inside the constructor function (optional)', desc: 'doSomething = function(){ // do stuff }'},
+  {step: 'Give the react component a home in the html page', desc: '<div id="app"></div>'},
+  {step: 'Render the Component', desc: 'ReactDOM.render(<App'}
 ];
 
 window.todos = todos;
@@ -98,8 +138,14 @@ complex. Can't hurt to use window.whatever to note when a variable is to be used
 The second argument tells the component where on the page to render its markup and data.
 The page must have an html tag with an id that matches the argument of the function call
 used to specify the DOM node.
+
+below, todos is like a parameter name while {window.todos} is the value.  the list can be large, then is time to 
+multiple components.  Think of <App as a function invokation with args of key/val pairs, which are then attached by React 
+to the props object. the "new" instance happens here
+
 */}
-ReactDOM.render(<App todos = {window.todos}/>, document.getElementById('app'));
+
+ReactDOM.render(<App todos = {window.todos} headline = {window.headline}/>, document.getElementById('app'));
 </script>
 </body>
 

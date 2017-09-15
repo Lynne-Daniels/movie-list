@@ -13,5 +13,5 @@ class App extends React.Component {
     return <h1>{this.state.movie}</h1>;
   }
 }
-// App need to be in the global scope.  It is undefined if this line is removed
+// App needs to be in the global scope.  It is undefined if this line is removed
 window.App = App;

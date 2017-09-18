@@ -22,22 +22,31 @@ var apiSample = [
     "mediatype": 1
   }
 ];
-
-var movieUrl = 'https://netflixroulette.net/api/api.php?title=Attack%20on%20titan';
-var apiMovies = ['Rocky', 'Star trek', 'As Good as It Gets'];
-
-var getMovie = (movieURL, callback) => {
+var getMovie = (movieTitle, callback) => {
   $.ajax({
     method: 'GET',
-    url: movieURL,
+    url: 'https://netflixroulette.net/api/api.php?',
+    data: {title: movieTitle},
     datatype: 'json'
   })
     .done((data) => {
-      console.log('done', data);
       callback(data);
     }
     );  
 };
+var nfrMovies = [];
+//var movieUrl = ['https://netflixroulette.net/api/api.php?title=Attack%20on%20titan'];
+var movieUrl = ['https://netflixroulette.net/api/api.php'];
+var apiMovies = ['Rocky', 'Star trek', 'As Good as It Gets'];
+var moviesz = apiMovies.map((e,i,a) => {
+  // uri encode e
+  getMovie(e, function(movie) {
+    console.log('here i am', movie);
+    nfrMovies.push(movie);
+  });
+});
+
+console.log('nooooooo', moviesz);
 // getMovie(movieUrl, function(data) {console.log(data)})
 window.$ = $;
 window.apiSample = apiSample;

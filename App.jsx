@@ -29,17 +29,10 @@ class App extends React.Component {
     this.refs.addMov.value = '';
   }
   toggleWatched(index) {
-    console.log('toggleWatched clicked: ', index, this);
-    console.log(this.props.movies[index].watched);
-    this.props.movies[index].watched = !!!this.props.movies[index].watched;
-    console.log(this.props.movies[index].watched);
-    this.setState({});
+    this.props.movies[index].watched = !!!this.props.movies[index].watched;// !!! converts undefined to bool.
+    this.setState({}); // update the button text
   }
 
-/*  handleSubmit(event) {
-    console.log('A name was submitted: ' + this.state.value);
-    event.preventDefault();
-  }*/
   render() {
     return (
       <div>
@@ -63,7 +56,6 @@ class App extends React.Component {
           {
             //filter the movies
             this.props.movies.filter((movie) =>{
-
               return movie.title.indexOf(this.state.value) > -1;
             // map results to component html
             }).map((movie, index)=>{

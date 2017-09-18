@@ -38,18 +38,22 @@ var nfrMovies = [];
 //var movieUrl = ['https://netflixroulette.net/api/api.php?title=Attack%20on%20titan'];
 var movieUrl = ['https://netflixroulette.net/api/api.php'];
 var apiMovies = ['Rocky', 'Star trek', 'As Good as It Gets'];
-var moviesz = apiMovies.map((e,i,a) => {
+/*var moviesz = apiMovies.map((e,i,a) => {
   // uri encode e
-  getMovie(e, function(movie) {
+  window.getMovie(e, function(movie) {
     console.log('here i am', movie);
-    nfrMovies.push(movie);
+    //nfrMovies.push(movie);
   });
-});
+});*/
 
-console.log('nooooooo', moviesz);
+//console.log('nooooooo', moviesz);
 // getMovie(movieUrl, function(data) {console.log(data)})
+var titles = ['Rocky', 'Star trek', 'As Good as It Gets'];
 window.$ = $;
 window.apiSample = apiSample;
 window.movies = movies;
 window.getMovie = getMovie;
 window.movieUrl = movieUrl;
+//window.moviesz = moviesz;
+window.titles = titles;
+window.apiMovies = apiMovies;

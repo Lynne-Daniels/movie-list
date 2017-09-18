@@ -4,13 +4,16 @@ class App extends React.Component {
     super(props);
 
     this.state = {value: '',
-      newMovie: ''
+      newMovie: '',
+      titles: []
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.addMovie = this.addMovie.bind(this);
     this.newMovie = this.newMovie.bind(this);
     this.toggleWatched = this.toggleWatched.bind(this);
+    this.getVid = this.getVid.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
     //this.handleSubmit = this.handleSubmit.bind(this);
   }
   // record any information in the search input
@@ -32,7 +35,25 @@ class App extends React.Component {
     this.props.movies[index].watched = !!!this.props.movies[index].watched;// !!! converts undefined to bool.
     this.setState({}); // update the button text
   }
+  // will send an ajax request for each title in arr
+  // add each returned obj to props
+  getVid(titles) {
+    var allMovies = [];
+    var mvObjs = this.props.titles.map((e,i,a) => {
+      window.getMovie(e, function(movie) {
+        console.log('here i am', movie, 'state', this);
+        allMovies.push(movie);
+      });
+    });
+    console.log(allMovies);
 
+    return allMovies;
+  }
+  componentDidMount() {
+    // calls getVid function after the 
+    // component exists and is ready
+    this.setState({titles: this.getVid(this.props.titles)});
+  }
   render() {
     return (
       <div>
@@ -70,6 +91,17 @@ class App extends React.Component {
               <div className="watched" onClick={() => { this.toggleWatched(index); }}>{movie.watched ? 'watched' : 'not watched'}</div></li>;
           }
           )}
+        </ul>
+        <div>Data from API</div>
+        {/*https://daveceddia.com/ajax-requests-in-react/
+        TODO get this to render.  Can correct state in dev tool
+      react panel.  maybe am trying to render before ajx done?*/}
+        {this.props.movies[0].title}
+        {this.state.titles[0]}
+        <ul>
+          {this.state.titles.map((movie, index) => {
+            return <li key={index}>{movie.show_title}</li>;
+          })}
         </ul>
         <h2>Hello Worldish Examples</h2>
         <p><code>this.state.step </code>renders the same thing as <code>this.props.todos[0].step</code></p>
